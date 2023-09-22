@@ -1,15 +1,10 @@
-// import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { IconButton } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import type { Metadata } from "next";
-import { Inter, Roboto } from "next/font/google";
-import { FaPlay } from "react-icons/fa";
+import { Roboto } from "next/font/google";
+import { SessionContextProvider } from "./context/session";
+import Footer from "./footer";
 import "./globals.css";
+import Header from "./header";
 
-const inter = Inter({ subsets: ["latin"] });
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -27,41 +22,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.className}`}>
-        <div className="sticky top-0 left-0 right-0">
-          <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-              <Toolbar>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                  Third Party
-                </Typography>
-              </Toolbar>
-            </AppBar>
-          </Box>
-        </div>
-        {children}
+      <body className={`${roboto.className} p-4 pt-20`}>
+        <SessionContextProvider>
+          <Header />
+          {children}
 
-        <div className="fixed bottom-0 left-0 right-0">
-          <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-              <Toolbar>
-                <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center">
-                  <div className="mb-2 bg-white border-primary-700 border-8 rounded-full w-[100px] h-[100px] flex justify-center items-center">
-                    <IconButton
-                      size="large"
-                      edge="start"
-                      color="primary"
-                      aria-label="menu"
-                      className="w-full h-full pl-8"
-                    >
-                      <FaPlay size={60} />
-                    </IconButton>
-                  </div>
-                </div>
-              </Toolbar>
-            </AppBar>
-          </Box>
-        </div>
+          <Footer />
+        </SessionContextProvider>
       </body>
     </html>
   );
