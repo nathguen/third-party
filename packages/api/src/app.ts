@@ -1,4 +1,9 @@
-import 'reflect-metadata';
+import { ASSEMBLY_API_KEY, CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT } from '@config';
+import { client } from '@database';
+import { Routes } from '@interfaces/routes.interface';
+import { ErrorMiddleware } from '@middlewares/error.middleware';
+import { logger, stream } from '@utils/logger';
+import axios from 'axios';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -6,13 +11,9 @@ import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
+import 'reflect-metadata';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
-import { client } from '@database';
-import { Routes } from '@interfaces/routes.interface';
-import { ErrorMiddleware } from '@middlewares/error.middleware';
-import { logger, stream } from '@utils/logger';
 
 export class App {
   public app: express.Application;
@@ -57,6 +58,24 @@ export class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+
+    // AssemblyAI API
+    this.app.get('/realtime-listener', async (req, res) => {
+      try {
+        const response = await axios.post(
+          'https://api.assemblyai.com/v2/realtime/token', // use account token to get a temp user token
+          { expires_in: 3600 }, // can set a TTL timer in seconds.
+          { headers: { authorization: ASSEMBLY_API_KEY } }, // AssemblyAI API Key goes here
+        );
+        const { data } = response;
+        res.json(data);
+      } catch (error) {
+        const {
+          response: { status, data },
+        } = error;
+        res.status(status).json(data);
+      }
+    });
   }
 
   private initializeRoutes(routes: Routes[]) {
