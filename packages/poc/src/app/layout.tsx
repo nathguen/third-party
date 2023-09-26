@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { SessionContextProvider } from "./context/session";
-import Footer from "./footer";
 import "./globals.css";
 import Header from "./header";
 
@@ -21,13 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${roboto.className} p-4 pt-20`}>
+    <html lang="en" className="flex h-full">
+      <body className={`${roboto.className} flex flex-1 flex-col m-0`}>
         <SessionContextProvider>
           <Header />
           {children}
-
-          <Footer />
         </SessionContextProvider>
       </body>
     </html>

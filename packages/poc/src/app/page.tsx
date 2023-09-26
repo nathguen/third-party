@@ -1,7 +1,9 @@
 "use client";
-import { Autocomplete, FormControl, TextField } from "@mui/material";
+import { ThemeProvider } from "@emotion/react";
+import { Button, Typography } from "@mui/material";
 import * as React from "react";
 import { useSessionContext } from "./context/session";
+import theme from "./theme";
 
 const relationshipLabel = "I am participant 2's...";
 
@@ -46,40 +48,21 @@ export default function Home() {
   }, [participant1, participant2, relationship, setStartEnabled]);
 
   return (
-    <main className="flex flex-1 flex-col items-center pt-4">
-      {/* name of participant text field */}
-      <FormControl fullWidth className="mb-4">
-        <TextField
-          fullWidth
-          id="outlined-basic"
-          label="Name of Participant 1"
-          variant="outlined"
-          onChange={(e) => setParticipant1(e.target.value)}
-        />
-      </FormControl>
-
-      {/* name of participant text field */}
-      <FormControl fullWidth className="mb-4">
-        <TextField
-          fullWidth
-          id="outlined-basic"
-          label="Name of Participant 2"
-          variant="outlined"
-          onChange={(e) => setParticipant2(e.target.value)}
-        />
-      </FormControl>
-
-      <FormControl fullWidth>
-        <Autocomplete
-          disablePortal
-          id="relationship-selecgt"
-          options={relationshipOptions}
-          onChange={(e, value) => setRelationship(value || "")}
-          renderInput={(params) => (
-            <TextField {...params} label={relationshipLabel} />
-          )}
-        />
-      </FormControl>
-    </main>
+    <ThemeProvider theme={theme}>
+      <main className="flex flex-1 flex-col items-center justify-center p-4">
+        <Typography variant="h2" className="mb-4">
+          Hello, Friend!
+        </Typography>
+        <Typography className="mb-4">I&apos;m new to this world.</Typography>
+        <Typography className="mb-4">
+          Can you help me learn more about who I am?
+        </Typography>
+        <div className="mt-4">
+          <Button fullWidth variant="contained" href="/microphone-permissions">
+            <Typography variant="h6">Sure!</Typography>
+          </Button>
+        </div>
+      </main>
+    </ThemeProvider>
   );
 }

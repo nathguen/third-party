@@ -16,7 +16,7 @@ export default function Header() {
           <AppBar position="static">
             <Toolbar>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Third Party
+                Iso
               </Typography>
             </Toolbar>
           </AppBar>
